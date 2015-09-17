@@ -14,4 +14,9 @@ gem "lita-slack"
 # Add handlers to give Lita new functionality.
 # For example:
 # gem "lita-google-images"
-# gem "lita-karma"
+gem "lita-greet"
+gem "lita-karma"
+gem "lita-location-decision"
+gem "lita-pokemon"
+gem "lita-directions"
+gem "lita-alias"

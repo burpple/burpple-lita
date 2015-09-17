@@ -38,4 +38,9 @@ Lita.configure do |config|
   ## documentation for options.
   # config.handlers.some_handler.some_config_key = "value"
   config.handlers.directions.google_api_key = ENV["DIRECTIONS_GOOGLE_API_KEY"]
+
+  # Trello
+  config.handlers.trello.public_key = ENV["TRELLO_PUBLIC_KEY"]
+  config.handlers.trello.token = ENV["TRELLO_TOKEN"]
+  config.handlers.trello.board = ENV["TRELLO_BOARD"]
 end

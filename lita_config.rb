@@ -29,15 +29,12 @@ Lita.configure do |config|
   # config.adapter.password = "secret"
 
   ## Example: Set options for the Redis connection.
-  REDIS_URI = ENV["REDISCLOUD_URL"]
-  uri = URI.parse(REDIS_URI) rescue nil
-  if uri
-    config.redis.host     = uri.host
-    config.redis.port     = uri.port
-    config.redis.password = uri.password
-  end
+  config.redis[:url] = ENV["REDISCLOUD_URL"]
 
   ## Example: Set configuration for any loaded handlers. See the handler's
   ## documentation for options.
   # config.handlers.some_handler.some_config_key = "value"
+
+  ## Use Heroku HTTP port
+  config.http.port = ENV["PORT"]
 end

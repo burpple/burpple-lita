@@ -1,3 +1,5 @@
+require './burpple_trello.rb'
+
 Dotenv.load
 
 Lita.configure do |config|
@@ -22,7 +24,8 @@ Lita.configure do |config|
 
   # The adapter you want to connect with. Make sure you've added the
   # appropriate gem to the Gemfile.
-  #config.robot.adapter = :shell
+  # config.robot.adapter = :shell
+  # config.adapters.shell.private_chat = true
   config.robot.adapter = :slack
   config.adapters.slack.token = "xoxb-10863559585-QvkE5PfJNyytQv1LIOndQvhj"
 
@@ -42,7 +45,7 @@ Lita.configure do |config|
   config.handlers.directions.google_api_key = ENV["DIRECTIONS_GOOGLE_API_KEY"]
 
   # Trello
-  config.handlers.trello.public_key = ENV["TRELLO_PUBLIC_KEY"]
-  config.handlers.trello.token = ENV["TRELLO_TOKEN"]
-  config.handlers.trello.board = ENV["TRELLO_BOARD"]
+  config.handlers.burpple_trello.public_key = ENV["TRELLO_PUBLIC_KEY"]
+  config.handlers.burpple_trello.token = ENV["TRELLO_TOKEN"]
+  config.handlers.burpple_trello.board = ENV["TRELLO_BOARD"]
 end

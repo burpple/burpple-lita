@@ -21,4 +21,5 @@ gem "lita-pokemon"
 gem "lita-directions"
 #gem "lita-alias"
 #gem "lita-trello"
+gem "ruby-trello" # burpple-trello dependency
 gem "dotenv"

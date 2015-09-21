@@ -26,7 +26,7 @@ module Lita
 
       def message(r)
         msgs_key = messages_key(r)
-        redis.rpush msgs_key, build_msg(r)
+        redis.rpush msgs_key, build_msg(r) # store oldest msg at top
         redis.ltrim msgs_key, 0, 49 # keep only last 50 msgs
       end
 
@@ -34,15 +34,16 @@ module Lita
         msgs_key = messages_key(r)
 
         message = r.args[1..-1].join(' ')
-        from = r.message.body.scan(/(?<=from @)\S+/).first
+        from = r.message.body.scan(/(?<=from )\S+/).first
 
-        last_msg = redis.lindex msgs_key, 0
+        last_msg = redis.lindex msgs_key, -1
         start = last_msg == build_msg(r) ? 1 : 0
         history = redis.lrange(msgs_key, start, -1)
         #TODO: smart date limiting
 
         if from
           begin
+            from.sub!(/\A@/,'') # strip @ character
             from = Lita::User.fuzzy_find(from).mention_name
             history.keep_if{ |s| s.sub(/\A.+\] /,'').start_with?(from) }
           rescue

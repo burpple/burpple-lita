@@ -40,8 +40,6 @@ GEM
     lita-directions (1.0.3)
       lita (>= 4.1)
       rest-client
-    lita-greet (0.1.0)
-      lita (>= 4.4)
     lita-karma (3.0.2)
       lita (>= 4.0)
     lita-location-decision (0.0.3)
@@ -92,7 +90,6 @@ DEPENDENCIES
   dotenv
   lita
   lita-directions
-  lita-greet
   lita-karma
   lita-location-decision
   lita-pokemon

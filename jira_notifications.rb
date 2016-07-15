@@ -18,7 +18,7 @@ module Lita
 
         puts body.inspect
 
-        if body['webhookEvent'] == 'jira:comment_created' and body['comment']
+        if body['webhookEvent'] == 'jira:issue_updated' and body['comment']
 
           body_issue = body['issue']
           issue = "#{body_issue['key']} #{body_issue['fields']['summary']}"

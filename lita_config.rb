@@ -1,4 +1,5 @@
 require './burpple_trello.rb'
+require './jira_notifications.rb'
 
 Dotenv.load
 
@@ -48,4 +49,6 @@ Lita.configure do |config|
   config.handlers.burpple_trello.public_key = ENV["TRELLO_PUBLIC_KEY"]
   config.handlers.burpple_trello.token = ENV["TRELLO_TOKEN"]
   config.handlers.burpple_trello.board = ENV["TRELLO_BOARD"]
+
+  config.handlers.jira_notifications.jira_url = ENV["JIRA_URL"]
 end

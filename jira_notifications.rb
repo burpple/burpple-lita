@@ -11,12 +11,10 @@ module Lita
           # TODO: is this setup correctly, or does user require Lita::User ?
           target = Source.new(user: target, private_message: true)
         else
-          target = Source.new(room: '#' + target)
+          target = Source.new(room: Lita::Room.find_by_name(target))
         end
 
         body = JSON.load(request.body)
-
-        puts body.inspect
 
         if body['webhookEvent'] == 'jira:issue_updated' and body['comment']
 

@@ -22,8 +22,13 @@ module Lita
           issue = "#{body_issue['key']} #{body_issue['fields']['summary']}"
           url = "#{config.jira_url}/browse/#{body_issue['key']}"
 
-          comment = body['comment']
-          content = comment['body'].gsub(/\[~([a-zA-Z0-9]+)\]/,'@$1')
+          comment      = body['comment']
+          content      = comment['body']
+          content.scan(/\[~([a-zA-Z0-9]+)\]/).flatten.each do |name|
+            user         = Lita::User.fuzzy_find(name)
+            mention_name = user ? user.mention_name : name
+            content.gsub!(/\[~#{name}\]/,"@#{mention_name}")
+          end
           assignee = nil
           if body_issue and assignee = body_issue['fields']['assignee']
             assignee = assignee.name
@@ -34,7 +39,6 @@ module Lita
           message += "> #{content}"
           message += "\ncc @#{assignee}" if assignee
 
-          puts "sending message! target=#{target.inspect} message=#{message}"
           robot.send_message(target, message)
 
         else

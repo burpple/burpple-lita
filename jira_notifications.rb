@@ -26,8 +26,8 @@ module Lita
           content      = comment['body']
           content.scan(/\[~([a-zA-Z0-9]+)\]/).flatten.each do |name|
             user         = Lita::User.fuzzy_find(name)
-            mention_name = user ? user.mention_name : name
-            content.gsub!(/\[~#{name}\]/,"@#{mention_name}")
+            mention_name = user ? user.name : "@#{name}"
+            content.gsub!(/\[~#{name}\]/, mention_name)
           end
           assignee = nil
           if body_issue and assignee = body_issue['fields']['assignee']
@@ -36,7 +36,10 @@ module Lita
 
           message  = "*#{issue}* _(#{url})_\n"
           message += "#{comment['author']['name']} commented:\n"
-          message += "> #{content}"
+          content.split("\n").each do |line|
+            message += "> #{line}\n"
+          end
+          message.chomp!
           message += "\ncc @#{assignee}" if assignee
 
           robot.send_message(target, message)

@@ -11,7 +11,8 @@ module Lita
           # TODO: is this setup correctly, or does user require Lita::User ?
           target = Source.new(user: target, private_message: true)
         else
-          target = Source.new(room: Lita::Room.find_by_name(target))
+          room   = Lita::Room.find_by_name(target)
+          target = Source.new(room: room)
         end
 
         body = JSON.load(request.body)
@@ -19,8 +20,9 @@ module Lita
         if body['webhookEvent'] == 'jira:issue_updated' and body['comment']
 
           body_issue = body['issue']
-          issue = "#{body_issue['key']} #{body_issue['fields']['summary']}"
-          url = "#{config.jira_url}/browse/#{body_issue['key']}"
+          issue_key  = body_issue['key']
+          issue_summary = body_issue['fields']['summary']
+          url = "#{config.jira_url}/browse/#{issue_key}"
 
           comment      = body['comment']
           content      = comment['body']
@@ -34,15 +36,30 @@ module Lita
             assignee = assignee['name']
           end
 
-          message  = "*#{issue}* _(#{url})_\n"
-          message += "#{comment['author']['name']} commented:\n"
+          author_name = comment['author']['name']
+
+          message  = "*#{issue_key} #{issue_summary}* _(#{url})_\n"
+          message += "#{author_name} commented:\n"
           content.split("\n").each do |line|
             message += "> #{line}\n"
           end
           message.chomp!
-          message += "\ncc @#{assignee}" if assignee
+          
+          attachment = Lita::Adapters::Slack::Attachment.new("",
+            fallback: message,
+            color: '#3F51B5',
+            pretext: "#{author_name} commented on <#{url}|#{issue_key}>",
+            title: issue_summary,
+            title_link: url,
+            fields: [{
+              title: "Comment",
+              value: content,
+              short: false
+            }],
+            footer: "cc @#{assignee}"
+          )
 
-          robot.send_message(target, message)
+          robot.chat_service.send_attachment(room, attachment)
 
         else
 

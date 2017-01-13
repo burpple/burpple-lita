@@ -1,5 +1,6 @@
 require './burpple_trello.rb'
 require './jira_notifications.rb'
+require './api_ai.rb'
 
 Dotenv.load
 

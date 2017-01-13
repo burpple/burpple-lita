@@ -22,4 +22,5 @@ gem "lita-directions"
 #gem "lita-alias"
 #gem "lita-trello"
 gem "ruby-trello" # burpple-trello dependency
+gem "httparty"
 gem "dotenv"

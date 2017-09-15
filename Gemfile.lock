@@ -100,5 +100,8 @@ DEPENDENCIES
   lita-slack
   ruby-trello
 
+RUBY VERSION
+   ruby 2.3.4p301
+
 BUNDLED WITH
-   1.10.6
+   1.15.4
